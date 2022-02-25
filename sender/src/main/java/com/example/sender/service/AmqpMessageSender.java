@@ -9,24 +9,19 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class ConvAndSend{
+public class AmqpMessageSender {
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper mapper;
 
     private final FanoutExchange exchange;
-    public ConvAndSend(RabbitTemplate rabbitTemplate, ObjectMapper mapper, FanoutExchange exchange) {
+    public AmqpMessageSender(RabbitTemplate rabbitTemplate, ObjectMapper mapper, FanoutExchange exchange) {
         this.rabbitTemplate = rabbitTemplate;
         this.mapper = mapper;
         this.exchange = exchange;
     }
 
-    public void sendMessage(MessageDto messageDto) {
-//            String messageDtoJson = mapper.writeValueAsString(messageDto);
-//
-//            Message message = MessageBuilder
-//                    .withBody(messageDtoJson.getBytes())
-//                    .setContentType(MessageProperties.CONTENT_TYPE_JSON)
-//                    .build();
-            rabbitTemplate.convertAndSend("new-fanout-exchange", "foo.bar.baz", messageDto);
+    public void sendMessage(MessageDto message) {
+        message.setStatus("Amqp");
+        rabbitTemplate.convertAndSend("new-fanout-exchange", "foo.bar.baz", message);
     }
 }

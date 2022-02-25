@@ -11,6 +11,6 @@ public class MessageDto {
     long time;
     String nameSender;
     int ageSender;
-
+    String status;
 
 }

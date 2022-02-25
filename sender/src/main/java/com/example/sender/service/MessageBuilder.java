@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-public class MessageCreator {
+public class MessageBuilder {
 
     List<String> namesList = new ArrayList<>();
     {

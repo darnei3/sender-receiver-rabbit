@@ -1,0 +1,5 @@
+### запуск отправки сообщений
+GET http://localhost:8081/messaging/start
+
+### остановка отправки сообщений
+GET http://localhost:8081/messaging/stop

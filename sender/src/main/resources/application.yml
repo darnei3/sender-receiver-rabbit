@@ -12,7 +12,12 @@ spring:
   cloud:
     stream:
       bindings:
-        producerOutput:
-          destination: ProducerDestination
+        output:
+          group: cloudGroup
+          destination: cloudDestination
           content-type: application/json
-          group: ProducerDestinationGroup
+
+messenger: "AMQP"
+
+#В текущей реализации можно выбирать только одного отправителя
+#messenger: "cloudStream"

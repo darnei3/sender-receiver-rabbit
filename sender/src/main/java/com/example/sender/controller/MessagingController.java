@@ -2,9 +2,8 @@ package com.example.sender.controller;
 
 
 import com.example.sender.model.MessageDto;
-import com.example.sender.service.CloudStreamMessageSender;
-import com.example.sender.service.ThreadMessageSender;
-import org.springframework.amqp.core.Message;
+import com.example.sender.service.CloudStreamSendMessageImpl;
+import com.example.sender.service.MessagingFlow;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,35 +11,37 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/messaging")
 public class MessagingController {
 
-    final RabbitTemplate rabbitTemplate;
-    final CloudStreamMessageSender cloudStreamMessageSender;
-    final ThreadMessageSender threadMessageSender;
+    final MessagingFlow messagingFlow;
 
-    public MessagingController(ThreadMessageSender threadMessageSender, RabbitTemplate rabbitTemplate, CloudStreamMessageSender cloudStreamMessageSender) {
-        this.threadMessageSender = threadMessageSender;
-        this.rabbitTemplate = rabbitTemplate;
-        this.cloudStreamMessageSender = cloudStreamMessageSender;
+    public MessagingController(MessagingFlow messagingFlow) {
+        this.messagingFlow = messagingFlow;
     }
 
 
     @GetMapping("/start")
     public void startMessaging(){
-        threadMessageSender.status = true;
-        threadMessageSender.start();
+        messagingFlow.status = true;
+        messagingFlow.startMessaging();
     }
 
     @GetMapping("/stop")
     public void stopMessaging(){
-        threadMessageSender.status = false;
+        messagingFlow.status = false;
     }
 
-    @GetMapping("/amqp/send/{message}")
-    public void sendMessages(@PathVariable MessageDto message){
-        rabbitTemplate.convertAndSend("client-server-exchange", "foo.bar.baz", message);
-    }
-
-    @GetMapping("/cloud/send/{message}")
-    public void sendCloudMessage(@PathVariable MessageDto message){
-        cloudStreamMessageSender.sendMessage(message);
-    }
+//    @GetMapping("/amqp/send/{message}")
+//    public void sendMessages(@PathVariable MessageDto message){
+//        rabbitTemplate.convertAndSend("client-server-exchange", "foo.bar.baz", message);
+//    }
+//
+//    @GetMapping("/cloud/send/")
+//    public void sendCloudMessage(){
+//        MessageDto messageDto = MessageDto.builder()
+//                .ageSender(1)
+//                .nameSender("1")
+//                .time(1)
+//                .idMs(1)
+//                .status("1").build();
+//        cloudStreamSendMessageImpl.sendMessage(messageDto);
+//    }
 }

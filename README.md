@@ -1,1 +1,1 @@
-# sender-receiver-rabbitMQ
+# messenger-receiver-rabbitMQ

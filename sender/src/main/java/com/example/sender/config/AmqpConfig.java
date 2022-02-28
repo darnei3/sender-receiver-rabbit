@@ -10,19 +10,22 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AmqpConfig {
 
+    public static final String EXCHANGE_NAME = "amqpDestination";
+    public static final String TOPIC_NAME = "";
+    public static final String QUEUE_NAME = "cloudDestination.cloudGroup";
     @Bean
     public Queue myQueue(){
-        return new Queue("test-queue");
+        return new Queue(QUEUE_NAME);
     }
 
     @Bean
     public Binding binding(){
-        return BindingBuilder.bind(myQueue()).to(eventExchange());
+        return BindingBuilder.bind(myQueue()).to(topicExchange()).with("#");
     }
 
     @Bean
-    public FanoutExchange eventExchange() {
-        return new FanoutExchange("new-fanout-exchange");
+    public TopicExchange topicExchange() {
+        return new TopicExchange(EXCHANGE_NAME);
     }
 
     @Bean

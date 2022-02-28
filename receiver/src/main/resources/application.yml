@@ -12,7 +12,19 @@ spring:
   cloud:
     stream:
       bindings:
-        producerInput:
-          destination: ProducerDestination
+        input:
+          group: cloudGroup
+          destination: cloudDestination
           content-type: application/json
-          group: ProducerDestinationGroup
+
+messenger:
+  amqp:
+    queue: "cloudDestination.cloudGroup"
+  receiver:
+    amqp:
+    cloudStream: "CloudStream"
+
+#    Можно изменять текущего получателя. Совместно тоже корректно работают
+#    amqp: "AMQP"
+#    cloudStream: "CloudStream"
+

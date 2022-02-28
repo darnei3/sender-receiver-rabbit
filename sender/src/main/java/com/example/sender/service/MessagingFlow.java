@@ -8,23 +8,20 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
-public class ThreadMessageSender extends Thread{
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ThreadMessageSender.class);
+public class MessagingFlow{
 
     final MessageBuilder messageBuilder;
-    final AmqpMessageSender amqpMessageSender;
-    final CloudStreamMessageSender cloudStreamMessageSender;
-    public ThreadMessageSender(MessageBuilder messageBuilder, AmqpMessageSender amqpMessageSender, CloudStreamMessageSender cloudStreamMessageSender) {
+    Messenger messenger;
+
+    public MessagingFlow(MessageBuilder messageBuilder, Messenger messenger) {
+        this.messenger = messenger;
         this.messageBuilder = messageBuilder;
-        this.amqpMessageSender = amqpMessageSender;
-        this.cloudStreamMessageSender = cloudStreamMessageSender;
+
     }
     public boolean status = true;
 
 
-    @Override
-    public void run() {
+    public void startMessaging() {
         System.out.println("Thread has started...");
         AtomicInteger atomicInt = new AtomicInteger(0);
         while (status) {
@@ -33,10 +30,7 @@ public class ThreadMessageSender extends Thread{
                 MessageDto messageDto = messageBuilder.createMessageDto();
                 messageDto.setIdMs(atomicInt.incrementAndGet());
 
-                amqpMessageSender.sendMessage(messageDto);
-                cloudStreamMessageSender.sendMessage(messageDto);
-
-                LOGGER.info("CloudStream send: {} and AMQP send: {} messages", atomicInt.toString(),  atomicInt.toString());
+                messenger.sendMessage(messageDto);
             } catch (InterruptedException e) {
                 System.out.println("Thread has been interrupted");
             }

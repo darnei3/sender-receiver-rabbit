@@ -3,9 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.example</groupId>
-	<artifactId>messenger-receiver-rabbit</artifactId>
+	<artifactId>sender-receiver-rabbit</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>messenger-receiver-rabbit</name>
+	<name>sender-receiver-rabbit</name>
 	<packaging>pom</packaging>
 
 	<modules>

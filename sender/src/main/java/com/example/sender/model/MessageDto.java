@@ -12,5 +12,6 @@ public class MessageDto {
     String nameSender;
     int ageSender;
     String status;
-
+    String mainMessage;
+    int rout;
 }

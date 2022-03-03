@@ -15,17 +15,21 @@ public class MessageDto implements Serializable {
     String nameSender;
     int ageSender;
     String status;
+    String mainMessage;
+    int rout;
 
 
     public MessageDto(){
 
     }
 
-    public MessageDto(long idMs, long time, String nameSender, int ageSender, String status) {
+    public MessageDto(long idMs, long time, String nameSender, int ageSender, String status, String mainMessage, int rout) {
         this.idMs = idMs;
         this.time = time;
         this.nameSender = nameSender;
         this.ageSender = ageSender;
         this.status = status;
+        this.mainMessage = mainMessage;
+        this.rout = rout;
     }
 }

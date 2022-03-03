@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
-public class MessagingFlow{
+public class MessagingFlow extends Thread{
 
     final MessageBuilder messageBuilder;
     Messenger messenger;
@@ -21,16 +21,23 @@ public class MessagingFlow{
     public boolean status = true;
 
 
-    public void startMessaging() {
-        System.out.println("Thread has started...");
+    public void run() {
         AtomicInteger atomicInt = new AtomicInteger(0);
+        AtomicInteger routInt = new AtomicInteger(0);
         while (status) {
             try {
-                Thread.sleep(60);
+                Thread.sleep(1);
                 MessageDto messageDto = messageBuilder.createMessageDto();
+
                 messageDto.setIdMs(atomicInt.incrementAndGet());
+                messageDto.setRout(routInt.getAndIncrement());
 
                 messenger.sendMessage(messageDto);
+                messenger.sendMessage(messageDto);
+                messenger.sendMessage(messageDto);
+                messenger.sendMessage(messageDto);
+                if(routInt.get() == 3)
+                    routInt.set(0);
             } catch (InterruptedException e) {
                 System.out.println("Thread has been interrupted");
             }

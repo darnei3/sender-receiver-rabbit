@@ -7,17 +7,33 @@ rabbitmq:
 server:
   port: 8081
 
-
+#отправка через дистен в очередь
 spring:
   cloud:
     stream:
+      rabbit:
+        bindings:
+          output:
+            producer:
+              deliveryMode: PERSISTENT
       bindings:
         output:
-          group: cloudGroup
-          destination: cloudDestination
+          group: amqpQueue
+          destination: amqpExchange
           content-type: application/json
 
-messenger: "AMQP"
+
+messenger: "cloudStream"
+
+
+
+
+#Жизнь очереди после перезагрузки кролика
+mes-queue-config:
+  queue:
+    durable: true
+  message:
+    persistent: true
 
 #В текущей реализации можно выбирать только одного отправителя
 #messenger: "cloudStream"

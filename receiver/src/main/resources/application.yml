@@ -8,21 +8,69 @@ server:
   port: 8080
 
 
+#мод конфиг, подключение к существующей очереди
 spring:
   cloud:
     stream:
+      rabbit:
+        bindings:
+          input:
+            consumer:
+              acknowledgeMode: AUTO
+              bindingRoutingKey: DECISION_PERSISTENCE_KEY
+              declareExchange: false
+              bindQueue: false
+              queueNameGroupOnly: true
+          input1:
+            consumer:
+              acknowledgeMode: AUTO
+              bindingRoutingKey: DECISION_PERSISTENCE_KEY
+              declareExchange: false
+              bindQueue: false
+              queueNameGroupOnly: true
+          input2:
+            consumer:
+              acknowledgeMode: AUTO
+              bindingRoutingKey: DECISION_PERSISTENCE_KEY
+              declareExchange: false
+              bindQueue: false
+              queueNameGroupOnly: true
       bindings:
+        input0:
+          binder: rabbit
+          group: testQueue
+        input1:
+          binder: rabbit
+          group: testQueue1
+        input2:
+          binder: rabbit
+          group: testQueue2
         input:
-          group: cloudGroup
-          destination: cloudDestination
-          content-type: application/json
+          binder: rabbit
+          group: amqpQueue
+
+
+#Дефолтный конфиг создаст соеденинение сам
+#spring:
+#  cloud:
+#    stream:
+#      bindings:
+#        input:
+##          consumer:
+##            durable-subscription: false
+#          group: cloudGroup
+#          destination: cloudDestination
+#          content-type: application/json
 
 messenger:
   amqp:
-    queue: "cloudDestination.cloudGroup"
+#    queue: "cloudDestination.cloudGroup"
   receiver:
     amqp:
     cloudStream: "CloudStream"
+    cloudStream1: "CloudStream1"
+    cloudStream2: "CloudStream2"
+    defaultCloudStream: "default"
 
 #    Можно изменять текущего получателя. Совместно тоже корректно работают
 #    amqp: "AMQP"

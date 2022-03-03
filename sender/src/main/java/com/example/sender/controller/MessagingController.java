@@ -21,7 +21,7 @@ public class MessagingController {
     @GetMapping("/start")
     public void startMessaging(){
         messagingFlow.status = true;
-        messagingFlow.startMessaging();
+        messagingFlow.start();
     }
 
     @GetMapping("/stop")

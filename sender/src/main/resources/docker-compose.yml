@@ -1,6 +1,7 @@
 version: '3.3'
 services:
       rabbit:
+            container_name: rabbit_mq_messenger
             image: rabbitmq:3.9.5-management
             hostname: rabbit
             ports:
